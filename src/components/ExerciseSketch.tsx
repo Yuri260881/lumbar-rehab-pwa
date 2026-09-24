@@ -1,17 +1,12 @@
 import type { SketchHighlight, SketchPose } from '../types';
 
 /**
- * Original, minimal line-art anatomical sketches.
+ * Soft cartoon-style exercise infographics.
  *
- * Every drawing is generated here from simple geometry — no stock imagery, no
- * third-party assets, so there are no licensing questions and the whole set
- * stays visually consistent. Gold = body, teal = the structures this exercise
- * is aimed at.
+ * The figures stay code-generated so the whole library remains lightweight and
+ * consistent. Each card combines the exercise geometry with a short instruction
+ * taken directly from the exercise description.
  */
-
-const W = 200;
-const H = 120;
-const FLOOR = 104;
 
 interface PoseGeometry {
   head: { cx: number; cy: number; r: number };
@@ -239,71 +234,118 @@ export function ExerciseSketch({
   pose,
   highlight,
   title,
+  startingPosition,
+  steps,
   className = '',
 }: {
   pose: SketchPose;
   highlight: SketchHighlight[];
   title: string;
+  startingPosition?: string;
+  steps?: string[];
   className?: string;
 }) {
   const geometry = POSES[pose];
+  const instruction = steps?.[0] ?? startingPosition ?? 'Двигайтесь медленно и только в комфортной амплитуде.';
+  const instructionLines = wrapInstruction(instruction, 34, 2);
+  const motion = MOTION_PATHS[pose];
   return (
     <svg
-      viewBox={`0 0 ${W} ${H}`}
+      viewBox="0 0 360 220"
       className={`h-auto w-full ${className}`}
       role="img"
       aria-label={title}
       focusable="false"
     >
       <title>{title}</title>
-      <rect x="0" y="0" width={W} height={H} rx="14" fill="#11161d" />
-      <line
-        x1="16"
-        y1={FLOOR}
-        x2={W - 16}
-        y2={FLOOR}
-        stroke="#2a3441"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
+      <rect x="0" y="0" width="360" height="220" rx="18" fill="#f8f1e8" />
+      <rect x="14" y="14" width="332" height="34" rx="17" fill="#fffaf4" stroke="#ead9c2" />
+      <text x="30" y="36" fill="#574d48" fontSize="12" fontWeight="700" letterSpacing="0.4">КАК ВЫПОЛНЯТЬ</text>
+      <g transform="translate(284 22)">
+        {[1, 2, 3].map((step) => (
+          <g key={step} transform={`translate(${(step - 1) * 19} 0)`}>
+            <circle cx="6" cy="6" r="7" fill={step === 1 ? '#4fbfa9' : '#e8cd94'} />
+            <text x="6" y="9" textAnchor="middle" fill="#fffaf4" fontSize="8" fontWeight="700">{step}</text>
+          </g>
+        ))}
+      </g>
+      <line x1="24" y1="176" x2="226" y2="176" stroke="#dac8b7" strokeWidth="3" strokeLinecap="round" />
       {geometry.props === 'mat' ? (
-        <rect x="20" y={FLOOR - 3} width={W - 40} height="6" rx="3" fill="#1b222c" />
+        <rect x="26" y="170" width="194" height="12" rx="6" fill="#e5d6c7" />
       ) : null}
       {geometry.props === 'block' ? (
-        <rect x="46" y="80" width="72" height="22" rx="6" fill="#1b222c" stroke="#2a3441" />
+        <rect x="58" y="144" width="76" height="28" rx="8" fill="#f0c777" stroke="#9d7b45" strokeWidth="2" />
       ) : null}
 
-      {/* Body */}
-      <g stroke="#e8cd94" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" fill="none">
-        <polyline points={geometry.trunk} />
-        {geometry.legs.map((points) => (
-          <polyline key={`leg-${points}`} points={points} />
-        ))}
-        {geometry.arms?.map((points) => (
-          <polyline key={`arm-${points}`} points={points} strokeWidth="5" />
-        ))}
+      {/* Cartoon body with a dark outline and warm inner stroke. */}
+      <g transform="translate(18 54) scale(1.05)" fill="none" strokeLinecap="round" strokeLinejoin="round">
+        <g stroke="#66564f" strokeWidth="12">
+          <polyline points={geometry.trunk} />
+          {geometry.legs.map((points) => <polyline key={`outline-leg-${points}`} points={points} />)}
+          {geometry.arms?.map((points) => <polyline key={`outline-arm-${points}`} points={points} strokeWidth="10" />)}
+        </g>
+        <g stroke="#efc98f" strokeWidth="7">
+          <polyline points={geometry.trunk} />
+          {geometry.legs.map((points) => <polyline key={`leg-${points}`} points={points} />)}
+          {geometry.arms?.map((points) => <polyline key={`arm-${points}`} points={points} strokeWidth="5" />)}
+        </g>
+        <circle cx={geometry.head.cx} cy={geometry.head.cy} r={geometry.head.r} fill="#efc98f" stroke="#66564f" strokeWidth="5" />
+        <circle cx={geometry.head.cx + 4} cy={geometry.head.cy - 2} r="1.8" fill="#66564f" stroke="none" />
+        <path d={`M ${geometry.head.cx + 4} ${geometry.head.cy + 4} q 4 3 7 0`} stroke="#66564f" strokeWidth="1.6" />
       </g>
-      <circle
-        cx={geometry.head.cx}
-        cy={geometry.head.cy}
-        r={geometry.head.r}
-        fill="none"
-        stroke="#e8cd94"
-        strokeWidth="6"
-      />
 
-      {/* Targeted structures */}
-      <g
-        stroke="#4fbfa9"
-        strokeWidth="5"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.95"
-      >
-        {highlight.map((key) => (
-          <path key={key} d={HIGHLIGHTS[key][pose]} />
-        ))}
+      {/* Targeted area and movement cue. */}
+      <g transform="translate(18 54) scale(1.05)" stroke="#4fbfa9" strokeLinecap="round" fill="none">
+        {highlight.map((key) => <path key={key} d={HIGHLIGHTS[key][pose]} strokeWidth="9" opacity="0.16" />)}
+        {highlight.map((key) => <path key={`accent-${key}`} d={HIGHLIGHTS[key][pose]} strokeWidth="4" opacity="0.95" />)}
       </g>
+      <path d={motion.path} fill="none" stroke="#4fbfa9" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+      <path d={motion.arrow} fill="none" stroke="#4fbfa9" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+
+      {/* Description-derived instruction panel. */}
+      <rect x="238" y="72" width="106" height="105" rx="14" fill="#fffaf4" stroke="#ead9c2" />
+      <circle cx="258" cy="93" r="12" fill="#4fbfa9" />
+      <text x="258" y="97" textAnchor="middle" fill="#fffaf4" fontSize="12" fontWeight="700">1</text>
+      <text x="278" y="91" fill="#574d48" fontSize="10" fontWeight="700">Начните</text>
+      {instructionLines.map((line, index) => (
+        <text key={line} x="252" y={115 + index * 14} fill="#756962" fontSize="9">{line}</text>
+      ))}
+      <text x="252" y="158" fill="#4fbfa9" fontSize="9" fontWeight="700">Без рывков и боли</text>
+      <circle cx="252" cy="169" r="3" fill="#e8cd94" />
+      <circle cx="263" cy="169" r="3" fill="#e8cd94" />
+      <circle cx="274" cy="169" r="3" fill="#e8cd94" />
     </svg>
   );
+}
+
+const MOTION_PATHS: Record<SketchPose, { path: string; arrow: string }> = {
+  supine: { path: 'M 86 152 q 32 18 62 0', arrow: 'M 140 146 l 10 6 -10 6' },
+  'supine-knees': { path: 'M 92 144 q 28 -28 54 0', arrow: 'M 138 122 l 10 4 -7 8' },
+  prone: { path: 'M 84 156 q 30 -12 60 0', arrow: 'M 136 151 l 10 5 -10 5' },
+  'prone-pressup': { path: 'M 78 130 q 20 -28 38 -4', arrow: 'M 108 120 l 8 8 -11 2' },
+  quadruped: { path: 'M 80 116 q 26 -18 56 0', arrow: 'M 126 111 l 10 5 -9 7' },
+  'side-left': { path: 'M 86 140 q 26 -18 50 0', arrow: 'M 124 134 l 10 6 -10 6' },
+  seated: { path: 'M 92 122 q 10 -22 0 -42', arrow: 'M 86 90 l 6 -10 6 10' },
+  standing: { path: 'M 136 138 q 10 -28 0 -52', arrow: 'M 130 94 l 6 -10 6 10' },
+  'standing-hinge': { path: 'M 132 132 q -28 -18 -44 0', arrow: 'M 96 126 l -10 6 10 6' },
+  walking: { path: 'M 76 142 q 28 -18 60 0', arrow: 'M 126 136 l 10 6 -10 6' },
+  breathing: { path: 'M 82 128 q 22 -20 46 0', arrow: 'M 118 122 l 10 6 -10 6' },
+};
+
+function wrapInstruction(value: string, maxCharacters: number, maxLines: number) {
+  const words = value.replace(/[.!,;:]/g, '').split(/\s+/);
+  const lines: string[] = [];
+  let current = '';
+  for (const word of words) {
+    const next = current ? `${current} ${word}` : word;
+    if (next.length > maxCharacters && current) {
+      lines.push(current);
+      current = word;
+    } else {
+      current = next;
+    }
+    if (lines.length === maxLines) break;
+  }
+  if (lines.length < maxLines && current) lines.push(current);
+  return lines.slice(0, maxLines);
 }
