@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Lumbar Rehab Dashboard">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#11161d" />
+      <stop offset="1" stop-color="#06080b" />
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e8cd94" />
+      <stop offset="1" stop-color="#c39a45" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)" />
+  <rect x="12" y="12" width="488" height="488" rx="102" fill="none" stroke="#2a3441" stroke-width="6" />
+  <!-- stylised lumbar spine -->
+  <path d="M256 96c44 34 44 78 0 112s-44 78 0 112 44 78 0 96"
+        fill="none" stroke="url(#gold)" stroke-width="26" stroke-linecap="round" />
+  <!-- vertebrae markers -->
+  <g stroke="#4fbfa9" stroke-width="16" stroke-linecap="round">
+    <path d="M176 152h56" />
+    <path d="M176 244h56" />
+    <path d="M176 336h56" />
+  </g>
+  <circle cx="256" cy="244" r="20" fill="none" stroke="#4fbfa9" stroke-width="12" />
+</svg>
