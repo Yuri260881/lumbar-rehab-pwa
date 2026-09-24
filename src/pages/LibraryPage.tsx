@@ -90,6 +90,7 @@ export function LibraryPage({ onNavigate }: { onNavigate: (route: Route) => void
                         pose={exercise.sketch.pose}
                         highlight={exercise.sketch.highlight}
                         title={`Схема: ${exercise.name}`}
+                        exerciseId={exercise.id}
                         startingPosition={exercise.startingPosition}
                         steps={exercise.steps}
                       />

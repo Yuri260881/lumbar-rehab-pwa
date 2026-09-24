@@ -42,6 +42,7 @@ export function ExerciseDetailPage({
             pose={exercise.sketch.pose}
             highlight={exercise.sketch.highlight}
             title={`Анатомический эскиз: ${exercise.name}`}
+            exerciseId={exercise.id}
             startingPosition={exercise.startingPosition}
             steps={exercise.steps}
           />
