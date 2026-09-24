@@ -36,6 +36,9 @@ function serviceWorkerPrecache(): Plugin {
 }
 
 export default defineConfig({
+  // GitHub Pages serves the project from /<repository-name>/; local dev keeps
+  // the root path for the simplest localhost experience.
+  base: process.env.GITHUB_ACTIONS ? '/lumbar-rehab-pwa/' : '/',
   plugins: [react(), serviceWorkerPrecache()],
   server: {
     host: '0.0.0.0',
