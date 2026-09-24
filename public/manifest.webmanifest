@@ -4,9 +4,9 @@
   "description": "Офлайн-дневник и трекер домашней реабилитации поясничного отдела. Не является медицинским изделием и не назначает лечение.",
   "lang": "ru",
   "dir": "ltr",
-  "id": "/",
-  "start_url": "/",
-  "scope": "/",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait-primary",
@@ -15,25 +15,25 @@
   "categories": ["health", "lifestyle", "medical"],
   "icons": [
     {
-      "src": "/icons/icon-192.png",
+      "src": "./icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/icon-512.png",
+      "src": "./icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/maskable-512.png",
+      "src": "./icons/maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/icons/icon.svg",
+      "src": "./icons/icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
@@ -44,19 +44,19 @@
     {
       "name": "Начать тренировку",
       "short_name": "Тренировка",
-      "url": "/#workout",
+      "url": "./#workout",
       "description": "Открыть сегодняшнюю программу"
     },
     {
       "name": "Секундомер",
       "short_name": "Таймер",
-      "url": "/#timer",
+      "url": "./#timer",
       "description": "Секундомер для статических упражнений"
     },
     {
       "name": "Дневник",
       "short_name": "Дневник",
-      "url": "/#diary",
+      "url": "./#diary",
       "description": "Записать самочувствие"
     }
   ]

@@ -15,17 +15,21 @@
 
 const VERSION = '__BUILD_ID__';
 const CACHE = `lumbar-rehab-${VERSION}`;
+const APP_ASSETS = '__APP_ASSETS__';
+const BASE = new URL('./', self.location.href).pathname;
+const BUILD_ASSETS = Array.isArray(APP_ASSETS) ? APP_ASSETS : [];
+const basePath = (value = '') => `${BASE}${value.replace(/^\/+/, '')}`;
 const PRECACHE_URLS = [
-  '/',
-  '/index.html',
-  '/manifest.webmanifest',
-  '/icons/icon.svg',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png',
-  '/icons/maskable-512.png',
-  '/icons/apple-touch-icon.png',
-  '/icons/badge-72.png',
-  '__APP_ASSETS__',
+  BASE,
+  basePath('index.html'),
+  basePath('manifest.webmanifest'),
+  basePath('icons/icon.svg'),
+  basePath('icons/icon-192.png'),
+  basePath('icons/icon-512.png'),
+  basePath('icons/maskable-512.png'),
+  basePath('icons/apple-touch-icon.png'),
+  basePath('icons/badge-72.png'),
+  ...BUILD_ASSETS.map(basePath),
 ].flat();
 
 self.addEventListener('install', (event) => {
@@ -62,10 +66,10 @@ self.addEventListener('fetch', (event) => {
         try {
           const fresh = await fetch(request);
           const cache = await caches.open(CACHE);
-          cache.put('/index.html', fresh.clone());
+          cache.put(basePath('index.html'), fresh.clone());
           return fresh;
         } catch {
-          const cached = await caches.match('/index.html');
+          const cached = await caches.match(basePath('index.html'));
           return cached ?? Response.error();
         }
       })(),
@@ -151,7 +155,7 @@ async function showPendingReminders() {
         body: target.body,
         tag: target.id,
         lang: 'ru',
-        icon: '/icons/icon-192.png',
+        icon: basePath('icons/icon-192.png'),
       });
     }
   } catch {
@@ -189,7 +193,7 @@ self.addEventListener('notificationclick', (event) => {
       for (const client of all) {
         if ('focus' in client) return client.focus();
       }
-      if (self.clients.openWindow) return self.clients.openWindow('/');
+      if (self.clients.openWindow) return self.clients.openWindow(BASE);
       return undefined;
     })(),
   );
