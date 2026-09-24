@@ -1,0 +1,63 @@
+{
+  "name": "Lumbar Rehab Dashboard",
+  "short_name": "Rehab",
+  "description": "Офлайн-дневник и трекер домашней реабилитации поясничного отдела. Не является медицинским изделием и не назначает лечение.",
+  "lang": "ru",
+  "dir": "ltr",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#06080b",
+  "theme_color": "#0b0f14",
+  "categories": ["health", "lifestyle", "medical"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Начать тренировку",
+      "short_name": "Тренировка",
+      "url": "/#workout",
+      "description": "Открыть сегодняшнюю программу"
+    },
+    {
+      "name": "Секундомер",
+      "short_name": "Таймер",
+      "url": "/#timer",
+      "description": "Секундомер для статических упражнений"
+    },
+    {
+      "name": "Дневник",
+      "short_name": "Дневник",
+      "url": "/#diary",
+      "description": "Записать самочувствие"
+    }
+  ]
+}
