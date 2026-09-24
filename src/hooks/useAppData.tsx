@@ -188,7 +188,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const registerServiceWorker = useCallback(async () => {
     if (typeof navigator === 'undefined' || !('serviceWorker' in navigator)) return false;
     try {
-      const registration = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
+      const baseUrl = import.meta.env.BASE_URL;
+      const registration = await navigator.serviceWorker.register(`${baseUrl}sw.js`, {
+        scope: baseUrl,
+      });
       setServiceWorkerReady(Boolean(registration));
       const periodic = await refreshPeriodicSync();
       setCapabilities((current) => ({ ...current, periodicSyncSupported: periodic }));
