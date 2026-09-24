@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+
+  body {
+    /* Graphite / deep blue-grey base with a very subtle vertical gradient. */
+    background-color: theme('colors.ink.950');
+    background-image: radial-gradient(
+        120% 80% at 50% -20%,
+        rgba(79, 191, 169, 0.08) 0%,
+        rgba(11, 15, 20, 0) 60%
+      ),
+      linear-gradient(180deg, #0b0f14 0%, #06080b 100%);
+    background-attachment: fixed;
+    -webkit-text-size-adjust: 100%;
+    /* Prevent horizontal overflow on small screens (WCAG 1.4.10). */
+    overflow-x: hidden;
+  }
+
+  /* Visible, high-contrast focus indicator for keyboard users (WCAG 2.4.11). */
+  :focus-visible {
+    outline: 2px solid theme('colors.gold.300');
+    outline-offset: 2px;
+    border-radius: 0.375rem;
+  }
+
+  ::selection {
+    background: theme('colors.gold.600');
+    color: theme('colors.ink.950');
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  input[type='range'] {
+    accent-color: theme('colors.teal.400');
+  }
+
+  input[type='time'],
+  input[type='number'],
+  input[type='text'],
+  textarea,
+  select {
+    color-scheme: dark;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-card border border-ink-650/80 bg-ink-850/80 shadow-card;
+  }
+
+  .card-pad {
+    @apply p-4 sm:p-5;
+  }
+
+  .label {
+    @apply text-sm font-medium text-ink-200;
+  }
+
+  .hint {
+    @apply text-sm leading-relaxed text-ink-300;
+  }
+
+  .btn {
+    @apply inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-2 rounded-xl px-4 py-2.5
+           text-base font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-gold-400 text-ink-950 hover:bg-gold-300 active:bg-gold-500;
+  }
+
+  .btn-secondary {
+    @apply btn border border-ink-600 bg-ink-800 text-ink-100 hover:border-ink-500 hover:bg-ink-750;
+  }
+
+  .btn-ghost {
+    @apply btn text-ink-200 hover:bg-ink-800 hover:text-ink-50;
+  }
+
+  .btn-danger {
+    @apply btn border border-danger-600/70 bg-danger-700/25 text-danger-100 hover:bg-danger-700/40;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium;
+  }
+
+  .stack {
+    @apply flex flex-col gap-4;
+  }
+}
+
+@layer utilities {
+  /* Honour the user's motion preference everywhere (WCAG 2.3.3). */
+  .motion-safe-anim {
+    transition-property: transform, opacity, background-color, border-color;
+    transition-duration: 160ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Reduced motion can also be forced from Settings. */
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
