@@ -42,6 +42,8 @@ export function ExerciseDetailPage({
             pose={exercise.sketch.pose}
             highlight={exercise.sketch.highlight}
             title={`Анатомический эскиз: ${exercise.name}`}
+            startingPosition={exercise.startingPosition}
+            steps={exercise.steps}
           />
         </div>
         <div className="mt-3 flex flex-wrap gap-1.5">

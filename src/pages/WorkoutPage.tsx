@@ -132,6 +132,8 @@ export function WorkoutPage({ onNavigate }: { onNavigate: (route: Route) => void
             pose={current.sketch.pose}
             highlight={current.sketch.highlight}
             title={`Анатомический эскиз: ${current.name}`}
+            startingPosition={current.startingPosition}
+            steps={current.steps}
           />
         </div>
 
