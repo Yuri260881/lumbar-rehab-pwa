@@ -234,6 +234,7 @@ export function ExerciseSketch({
   pose,
   highlight,
   title,
+  exerciseId,
   startingPosition,
   steps,
   className = '',
@@ -241,6 +242,7 @@ export function ExerciseSketch({
   pose: SketchPose;
   highlight: SketchHighlight[];
   title: string;
+  exerciseId?: string;
   startingPosition?: string;
   steps?: string[];
   className?: string;
@@ -249,6 +251,16 @@ export function ExerciseSketch({
   const instruction = steps?.[0] ?? startingPosition ?? 'Двигайтесь медленно и только в комфортной амплитуде.';
   const instructionLines = wrapInstruction(instruction, 34, 2);
   const motion = MOTION_PATHS[pose];
+  if (exerciseId && RASTER_ILLUSTRATIONS.has(exerciseId)) {
+    return (
+      <img
+        src={`${import.meta.env.BASE_URL}exercises/${exerciseId}.png`}
+        alt={title}
+        className={`h-auto w-full rounded-2xl ${className}`}
+        loading="lazy"
+      />
+    );
+  }
   return (
     <svg
       viewBox="0 0 360 220"
@@ -331,6 +343,15 @@ const MOTION_PATHS: Record<SketchPose, { path: string; arrow: string }> = {
   walking: { path: 'M 76 142 q 28 -18 60 0', arrow: 'M 126 136 l 10 6 -10 6' },
   breathing: { path: 'M 82 128 q 22 -20 46 0', arrow: 'M 118 122 l 10 6 -10 6' },
 };
+
+const RASTER_ILLUSTRATIONS = new Set([
+  'pelvic-tilt',
+  'knee-rolls',
+  'cat-camel',
+  'bird-dog',
+  'hip-bridge',
+  'hamstring-stretch',
+]);
 
 function wrapInstruction(value: string, maxCharacters: number, maxLines: number) {
   const words = value.replace(/[.!,;:]/g, '').split(/\s+/);
