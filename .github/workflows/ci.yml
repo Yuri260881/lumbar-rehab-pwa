@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# The pipeline needs no credentials: the app has no server, no analytics and no
+# external data sources, so there are no secrets to configure.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Lint, typecheck, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint (eslint, incl. jsx-a11y)
+        run: npm run lint
+
+      - name: Typecheck (tsc --noEmit)
+        run: npm run typecheck
+
+      - name: Unit and UI tests (vitest)
+        run: npm run test -- --reporter=verbose
+
+      - name: Production build
+        run: npx vite build
+
+      - name: Verify service worker precache was injected
+        run: |
+          test -f dist/sw.js
+          ! grep -q "__BUILD_ID__" dist/sw.js
+          grep -q "assets/index" dist/sw.js
+          echo "sw.js: $(wc -c < dist/sw.js) bytes"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 7
